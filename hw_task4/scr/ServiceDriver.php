@@ -12,4 +12,9 @@ class ServiceDriver implements ServiceInterface
     {
         $price += $this->price;
     }
+
+    public function getCost($price)
+    {
+        return $this->price;
+    }
 }

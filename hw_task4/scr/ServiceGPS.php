@@ -10,8 +10,11 @@ class ServiceGPS implements ServiceInterface
 
     public function apply(TariffInterface $tariff, &$price)
     {
-        $time = ceil($tariff->getTime() / 60);
-        $price += $this->pricePerHours * $time;
+//        $time = ceil($tariff->getTime() / 60);
+//        $price += $this->pricePerHours * $time;
     }
-
+    public function getCost($pricePerHours)
+    {
+        return $this->pricePerHours;
+    }
 }

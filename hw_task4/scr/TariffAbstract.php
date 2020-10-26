@@ -1,42 +1,42 @@
 <?php
+
 abstract class TariffAbstract implements TariffInterface
 {
-protected $priceMin;
-protected $priceDis;
-protected $min;
-protected $distance;
+    const PRICE_MIN = self::PRICE_MIN;
+    const PRICE_DIS = self::PRICE_DIS;
+    protected $min;
+    protected $distance;
     /** @var ServiceInterface[] */
-protected $services = [];
+    protected $services = [];
 
-public function __construct (int $distance, int $min)
-{
-    $this->distance = $distance;
-    $this->min = $min;
-}
-    public function calculationPrice(): int
+    public function __construct($distance, $min)
     {
-        $price = $this->distance * $this->priceDis + $this->min * $this->priceMin;
+        $this->distance = $distance;
+        $this->min = $min;
+    }
 
-        if ($this->services) {
-            foreach ($this->services as $service) {
-                $service->apply($this, $price);
-            }
+    public function calculationPrice()
+    {
+        $price = $this->distance * $this::PRICE_DIS + $this->min * $this::PRICE_MIN;
+
+        foreach ($this->services as $service) {
+            $price += $service->getCost($price);
         }
         return $price;
     }
 
-    public function addService(ServiceInterface $service): TariffInterface
+    public function addService(ServiceInterface $service)
     {
-        array_push($this->services, $service);
+        $this->services[] = $service;
         return $this;
     }
 
-    public function getTime(): int
+    public function getTime()
     {
         return $this->min;
     }
 
-    public function getDistance(): int
+    public function getDistance()
     {
         return $this->distance;
     }
